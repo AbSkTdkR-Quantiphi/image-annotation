@@ -12,7 +12,7 @@ original [Annotorious](https://github.com/annotorious/annotorious). See the
 
 ## Starting the project
 
-Run the following command
+Run the following command:
 npm i
 
 Then to run the code:
