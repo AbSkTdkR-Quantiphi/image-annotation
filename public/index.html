@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Annotorious | Basic Example</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            padding: 20px;
+            margin: 0px;
+            font-family: 'Lato', sans-serif;
+        }
+        
+        #content {
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 21px;
+            font-weight: normal;
+            margin: 0;
+            padding: 0;
+        }
+        
+        p.instructions {
+            padding: 10px 0;
+        }
+        
+        img {
+            max-width: 100%;
+        }
+        
+        p.caption {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #8f8f8f;
+        }
+        
+        p.caption a {
+            color: #3f3f3f;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <h1>Annotate the image</h1>
+        <p class="instructions">
+            Click the annotation to edit. Click and drag the mouse to create a new annotation.
+        </p>
+        <p>
+            <!-- <button id="add-body">Add Body</button> -->
+            <button id="save-annot">Save</button>
+            <button id="current-tool">RECTANGLE</button>
+        </p>
+        <img id="hallstatt" src="640px-Hallstatt.jpg">
+    </div>
+    </div>
+    <script>
+        (function() {
+            var anno = Annotorious.init({
+                image: 'hallstatt',
+                locale: 'auto',
+                widgets: [{
+                    widget: 'COMMENT'
+                }, {
+                    widget: 'TAG',
+                    vocabulary: ['Animal', 'Building', 'Waterbody']
+                }]
+            });
+
+            anno.setAuthInfo({
+                id: 'testid123',
+                displayName: 'bob'
+            });
+            let id = 0;
+            // Whenever a new annotation is created by the user, we want to append this body
+            let tagData = [];
+            var templateBody = {
+                tagId: '',
+                tagName: '',
+                createdOn: '',
+                coordinate: '',
+            };
+
+            anno.on('createSelection', function(s) {
+                console.log('createSelection');
+            });
+
+            anno.on('createAnnotation', function(a) {
+                templateBody.tagId = a.id;
+                templateBody.tagName = a.body[0].value;
+                templateBody.createdOn = a.body[0].created;
+                templateBody.coordinate = a.target.selector.value;
+                tagData.push(templateBody)
+                console.log('created', tagData);
+            });
+
+            anno.on('updateAnnotation', function(annotation, previous) {
+                console.log('updated', previous, 'with', annotation);
+            });
+
+            anno.on('deleteAnnotation', function(annotation) {
+                console.log('deleted', annotation);
+            });
+
+            anno.loadAnnotations('annotations.w3c.json');
+
+            anno.setDrawingTool('rect');
+
+            function download(content, fileName, contentType) {
+                var a = document.createElement("a");
+                var file = new Blob([content], {
+                    type: contentType
+                });
+                a.href = URL.createObjectURL(file);
+                a.download = fileName;
+                a.click();
+            }
+
+            let saveannotBtn = document.getElementById('save-annot');
+            saveannotBtn.addEventListener('click', function() {
+                console.log('function called')
+                download(JSON.stringify(tagData), 'sampl.json', 'application/json');
+            })
+
+            /* var btnAddBody = document.getElementById('add-body');
+
+            btnAddBody.addEventListener('click', function() {
+                var selected = anno.getSelected();
+
+                selected.body = [{
+                    type: 'TextualBody',
+                    purpose: 'tagging',
+                    value: 'Just a tag'
+                }];
+
+                anno.updateSelected(selected);
+            }); */
+
+            var toolToggle = document.getElementById('current-tool');
+            toolToggle.addEventListener('click', function() {
+                if (toolToggle.innerHTML == 'RECTANGLE') {
+                    toolToggle.innerHTML = 'POLYGON';
+                    anno.setDrawingTool('polygon');
+                } else {
+                    toolToggle.innerHTML = 'RECTANGLE';
+                    anno.setDrawingTool('rect');
+                }
+            });
+        })()
+    </script>
+</body>
+
+</html>
