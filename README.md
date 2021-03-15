@@ -10,58 +10,10 @@ original [Annotorious](https://github.com/annotorious/annotorious). See the
 
 <img width="620" src="https://raw.githubusercontent.com/recogito/annotorious/master/screenshot.jpg" />
 
-## Installing
+## Starting the project
 
-If you use npm, `npm install @recogito/annotorious` and 
+Run the following command
+npm i
 
-```javascript
-import { Annotorious } from '@recogito/annotorious';
-
-import '@recogito/annotorious/dist/annotorious.min.css';
-
-const anno = new Annotorious({ image: 'hallstatt' }); // image element or ID
-```
-
-Otherwise download the [latest release](https://github.com/recogito/annotorious/releases/latest)
-and include it in your web page.
-
-```html
-<link rel="stylesheet" href="annotorious.min.css">
-<script src="annotorious.min.js"></script>
-```
-
-## Using
-
-```html
-<body>
-  <div id="content">
-    <img id="hallstatt" src="640px-Hallstatt.jpg">
-  </div>
-  <script>
-    (function() {
-      var anno = Annotorious.init({
-        image: 'hallstatt'
-      });
-
-      anno.loadAnnotations('annotations.w3c.json');
-    })()
-  </script>
-  <script type="text/javascript" src="annotorious.min.js"></script>
-</body>
-```
-Full documentation is [on the project website](https://recogito.github.io/annotorious/). Questions? Feedack? Feature requests? Join the 
-[Annotorious chat on Gitter](https://gitter.im/recogito/annotorious).
-
-[![Join the chat at https://gitter.im/recogito/annotorious](https://badges.gitter.im/recogito/annotorious.svg)](https://gitter.im/recogito/annotorious?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-## License
-
-[BSD 3-Clause](LICENSE) (= feel free to use this code in whatever way
-you wish. But keep the attribution/license file, and if this code
-breaks something, don't complain to us :-)
-
-## Who's Using Annotorious
-
-![NHS Wales Logo](logos/NHSWalesCavLogo.png) &nbsp; [![MicroPasts Logo](logos/MicroPasts.png)](https://crowdsourced.micropasts.org/)
-
-Using Annotorious? [Let us know!](https://gitter.im/recogito/annotorious)
+Then to run the code:
+npm start
